@@ -1,0 +1,59 @@
+{
+  "name": "screen-reporter",
+  "version": "1.0.0",
+  "description": "Report visual bugs directly into your existing issue tracking tool like Trello",
+  "main": "webpack.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/R-sfari/screen-reporter.git"
+  },
+  "keywords": [
+    "chrome",
+    "extension",
+    "report",
+    "bugs",
+    "create",
+    "trello",
+    "card"
+  ],
+  "author": "Rami Sfari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/R-sfari/screen-reporter/issues"
+  },
+  "homepage": "https://github.com/R-sfari/screen-reporter#readme",
+  "dependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.4.0",
+    "cssnano":"^4.1.10",
+    "postcss-loader": "^3.0.0",
+    "postcss-load-config": "^2.1.0",
+    "postcss-plugin": "1.0.0",
+    "postcss-import": "12.0.1",
+    "postcss-preset-env": "6.7.0",
+    "style-loader": "^1.1.2",
+    "file-loader":"^5.0.2",
+    "sass-loader":"^8.0.2",
+    "node-sass":"^4.13.1",
+    "url-loader":"^3.0.0",
+    "autoprefixer":"^9.7.4",
+    "jquery":"^3.4.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-loader-spinner": "^3.1.5",
+    "react-select": "^3.0.8",
+    "trello":"^0.10.0",
+    "uuid":"^3.4.0",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10"
+  },
+  "scripts": {
+    "start": "webpack --mode development --watch --progress",
+    "build": "webpack --env prod",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

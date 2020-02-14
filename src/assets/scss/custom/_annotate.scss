@@ -1,0 +1,61 @@
+.annotate-container{
+
+  position: relative;
+
+  &> [id^=baseLayer]{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    background: grey;
+  }
+
+  &> [id^=drawingLayer]{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background: transparent;
+  }
+}
+
+
+.btn-group-annotate {
+    position: absolute;
+    top: 0;
+    left: 40%;
+    z-index: 1000;
+    background: rgba(52,58,64,.8);
+    backdrop-filter: blur(3px) brightness(50%) saturate(50%);
+    border-radius: 52px;
+    padding: 6px;
+    margin-top: 20px;
+  
+  input {
+    display: none
+  }
+
+  .tool-button {
+    width: 50px;
+    height: 50px;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 36px;
+    background: 0 0;
+    cursor: pointer;
+    outline: none;
+    transition: all 32ms ease-out;
+    margin-left: 0.5em;
+
+    img {
+      width: 35px;
+      height: 35px;
+    }
+  }
+}
+
+.tool-button.active {
+  background: #949698;
+}
