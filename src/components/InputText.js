@@ -1,8 +1,24 @@
 import React from 'react'
 
 
-export default React.forwardRef((props, ref) => (
-  <div className="form-group">
-    <input type="text" className="form-control form-control-alternative" ref={ref} placeholder={props.placeholder} />
-  </div>
-))
+export default props => {
+  const { onBlur, type="text", icon, error=null, ...input } = props
+  return (
+    <div className="form-group">
+      <div className={("input-group input-group-alternative mb-3 ") + ( error ? " has-danger " : "")}>
+        {
+          icon &&
+          <div className="input-group-prepend">
+            <span className="input-group-text"><i className={`ni ${icon}`}></i></span>
+          </div>
+        }
+        <input
+          className={("form-control ") + (error ? " is-invalid ": "")}
+          type={type}
+          onBlur={onBlur}
+          {...input}
+        />
+      </div>
+    </div>
+  )
+}

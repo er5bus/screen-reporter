@@ -1,20 +1,19 @@
 const webpack = require('webpack');
 
+
 module.exports = {
-  node: {
-    fs: 'empty'
-  },
+  node: { fs: 'empty' },
+  devtool: 'source-map',
   entry: {
-    eventPage: './src/eventPage.js',
-    options: './src/options.js',
-    receiver: './src/receiver.js'
+    backgroundScript: './src/backgroundScript.js',
+    index: './src/index.js'
   },
   output: {
-    path: __dirname + "/extension/assets/js",
-    filename: "[name].js",
-    sourceMapFilename: "[name].js.map"
+    path: __dirname + '/chrome/build/',
+    filename: '[name].js',
+    publicPath: '/build/',
+    chunkFilename: '[name].chunk.js',
   },
-  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -31,23 +30,40 @@ module.exports = {
       {
         test: /\.s[ac]ss$/i,
         use: [
-          // Creates `style` nodes from JS strings
-          'style-loader',
-          // Translates CSS into CommonJS
-          'css-loader',
-          // Compiles Sass to CSS
-          'sass-loader',
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'resolve-url-loader',
+            options: {
+              sourceMap: true,
+              engine: "rework",
+              path: __dirname + '/chrome/build/',
+              absolute: false
+            }
+          },
+          {
+            loader: 'sass-loader'
+          }
         ],
       },
       {
-        test: /\.(jpg|svg|png)$/,
+        test: /\.(png|svg)$/,
         use: {
           loader: 'url-loader',
         },
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)$/,
+        use:'file-loader'
       }
     ]
   },
   optimization: {
-    minimize: false
+    minimize: false,
+    portableRecords: true
   }
 }

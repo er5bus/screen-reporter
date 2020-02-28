@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-export default ( { fullWidth = true, children}) =>
+export default ( { fullWidth = true, children, mt=400}) =>
   <main>
     <section className="section-profile-cover section-shaped my-0">
       <div className="shape shape-style-1 shape-primary alpha-4">
@@ -20,7 +20,7 @@ export default ( { fullWidth = true, children}) =>
       </div>
     </section>
     <section className="section">
-      <div className={fullWidth ? 'container-fluid' : 'container' }>
+      <div className={(fullWidth ? 'container-fluid' : 'container') + (` mt--${mt}`) }>
         { children }
       </div>
     </section>

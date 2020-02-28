@@ -1,9 +1,9 @@
 import React from 'react'
 
-import TextCenter from './TextCenter'
+import TextAlign from './TextAlign'
 
 
-export default ({text, mb=0, mt=0}) =>
-  <TextCenter mb={mb} mt={mt}>
+export default ({text, align='center', mb=0, mt=0}) =>
+  <TextAlign align={align} mb={mb} mt={mt}>
     <small className="text-muted">{text}</small>
-  </TextCenter>
+  </TextAlign>

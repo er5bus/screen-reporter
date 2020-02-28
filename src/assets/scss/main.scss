@@ -67,7 +67,6 @@
 @import "custom/reboot.scss";
 @import "custom/global.scss";
 @import "custom/utilities.scss";
-
 @import "custom/accordion.scss";
 @import "custom/alerts.scss";
 @import "custom/avatars.scss";
@@ -86,6 +85,7 @@
 @import "custom/list-group.scss";
 @import "custom/modal.scss";
 @import "custom/nav.scss";
+@import "custom/color-picker.scss";
 @import "custom/annotate.scss";
 @import "custom/navbar.scss";
 @import "custom/pagination.scss";
@@ -94,3 +94,8 @@
 @import "custom/section.scss";
 @import "custom/separator.scss";
 @import "custom/type.scss";
+@import "custom/error-page.scss";
+
+// Nucleo components
+
+@import "nucleo/nucleo.scss";

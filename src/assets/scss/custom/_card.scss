@@ -1,8 +1,11 @@
 .card {
     position: relative;
-    overflow: hidden;
-    overflow-x: auto;
-    overflow-y: auto;
+}
+
+.card-overflow {
+  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 .profile-page {

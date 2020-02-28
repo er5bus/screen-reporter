@@ -72,6 +72,7 @@
             }
         }
         .nav-link {
+            cursor: pointer;
             padding-top: $navbar-nav-link-padding-y;
             padding-bottom: $navbar-nav-link-padding-y;
             border-radius: $navbar-nav-link-border-radius;
