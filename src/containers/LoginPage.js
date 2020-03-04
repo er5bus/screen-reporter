@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { ROUTING } from '../constants'
 
-import { login } from '../actions'
+import { removeMessages, login } from '../actions'
 
 import Button from '../components/Button'
 import Col from '../components/Col'
@@ -25,13 +25,16 @@ class LoginPage extends React.Component {
     super(props)
   }
 
+  componentDidMount() {
+    this.props.removeMessages()
+  }
+
   onSubmit = (object) => {
     this.props.login(object)
   }
 
   render() {
     const { error, success, currentUser } = this.props
-    console.log(error, success)
     if (currentUser){
       return <Redirect to={ROUTING.OPTIONS_PAGE} />
     }else {
@@ -41,8 +44,8 @@ class LoginPage extends React.Component {
           <Container fullWidth={false}  mt={300}>
             <Row>
               <Col xl={6} lg={7} md={8} sm={12} >
-                { error && <Alert message={error} /> }
-                { success && <Alert type="success" message={success} /> }
+                { error && <Alert.Error object={error} /> }
+                { success && <Alert.Success object={success} /> }
                 <Card bg="secondary">
                   <Card.Header>
                     <Card.Title text="Log in" />
@@ -72,7 +75,7 @@ class LoginPage extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ login }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({ removeMessages, login }, dispatch)
 const mapStateToProps = state => state.auth
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

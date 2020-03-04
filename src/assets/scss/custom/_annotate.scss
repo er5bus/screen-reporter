@@ -21,15 +21,14 @@
 
 
 .btn-group-annotate {
-    position: absolute;
-    top: 0;
-    left: 40%;
+    position: relative;
     z-index: 1000;
     background: rgba(52,58,64,.8);
     backdrop-filter: blur(3px) brightness(50%) saturate(50%);
     border-radius: 52px;
     padding: 6px;
-    margin-top: 20px;
+    margin: 6px;
+    margin-right: 13rem;
   
   input {
     display: none

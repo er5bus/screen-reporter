@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { ROUTING } from '../constants'
-import { editProfile, logout } from '../actions'
+import { removeMessages, editProfile, logout } from '../actions'
 
 import Col from '../components/Col'
 import Row from '../components/Row'
@@ -23,12 +23,16 @@ class EditProfilePage extends React.Component {
     super(props)
   }
 
+  componentDidMount() {
+    this.props.removeMessages()
+  }
+
   onSubmitForm = values => {
     this.props.editProfile(values, this.props.currentUser.id)
   }
 
   render() {
-    const { error, currentUser } = this.props
+    const { error, success, currentUser } = this.props
     if (!currentUser){
       return <Redirect to={ROUTING.LOGIN_PAGE} />
     }else {
@@ -37,14 +41,15 @@ class EditProfilePage extends React.Component {
           <Navbar>
             <Navbar.Dropdown text={currentUser.fullname}>
               <Navbar.DropdownLinkItem to={ROUTING.PROFILE_PAGE} text="Profile" />
-              <Navbar.DropdownLinkItem to={ROUTING.OPTIONS_PAGE} text="Settings" />
+              <Navbar.DropdownLinkItem to={ROUTING.OPTIONS_PAGE} text="Integrations" />
               <Navbar.DropdownItem onClick={this.props.logout} text="Logout" />
             </Navbar.Dropdown>
           </Navbar>
           <Container fullWidth={false} mt={300}>
             <Row>
               <Col xl={6} lg={7} md={8} sm={12}>
-                { error && <Alert message={error} /> }
+                { error && <Alert.Error object={error} /> }
+                { success && <Alert.Success object={success} /> }
                 <Card bg="secondary">
                   <Card.Header>
                     <Card.Title text="Update Your informations" />
@@ -63,7 +68,7 @@ class EditProfilePage extends React.Component {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ editProfile, logout }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({ removeMessages, editProfile, logout }, dispatch)
 const mapStateToProps = state => state.auth
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfilePage)

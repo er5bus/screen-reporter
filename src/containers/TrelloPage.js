@@ -3,9 +3,17 @@ import { NavLink, Redirect } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { ROUTING } from '../constants'
+import { ROUTING, PAGE } from '../constants'
 
-import { removeScreenshot, fetchTrelloBoards, createTrelloCard, fetchTrelloBoardLists, fetchTrelloBoardMembers, fetchTrelloBoardLabels } from '../actions'
+import {
+  openTab,
+  removeMessages,
+  fetchTrelloBoards,
+  createTrelloCard,
+  fetchTrelloBoardLists,
+  fetchTrelloBoardMembers,
+  fetchTrelloBoardLabels
+} from '../actions'
 
 import Button from '../components/Button'
 import Col from '../components/Col'
@@ -17,6 +25,7 @@ import TextAlign from '../components/TextAlign'
 import TextMuted from '../components/TextMuted'
 import TrelloForm from '../components/TrelloForm'
 import Alert from '../components/Alert'
+import Text from '../components/Text'
 
 
 class TrelloPage extends React.Component {
@@ -26,7 +35,10 @@ class TrelloPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchTrelloBoards()
+    const { integrations } = this.props
+    if (integrations.length){
+      this.props.fetchTrelloBoards()
+    }
   }
 
   onBoardChange = (value) => {
@@ -41,34 +53,50 @@ class TrelloPage extends React.Component {
   }
 
   render () {
-    const { integrations, annotatedScreenshot, trello } = this.props
-    if (!integrations && annotatedScreenshot){
-      return <Redirect to={ROUTING.LOGIN_PAGE} />
+    const { integrations, currentUser, annotatedScreenshot, trello } = this.props
+    if (!annotatedScreenshot){
+      return <Redirect to={ROUTING.OPTIONS_PAGE} />
     }else {
       return (
         <>
           <Navbar>
+            <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="Options" />
             <Navbar.Link to={ROUTING.SCREEN_CAPTURE_EDITOR.PATH.replace(/:uuid/gi, annotatedScreenshot.uuid)} text="Go Back to Previous Page" />
           </Navbar>
-          <Container fullWidth={false}  mt={400}>
+          <Container fullWidth={false}  mt={!integrations.length ? 200 : 400}>
             <Row>
               <Col xl={8} lg={8} md={8} sm={12} >
-                { trello.error && <Alert message={trello.error} /> }
-                <Card bg="secondary">
-                  <Card.Header>
-                    <Card.Title text="Post it on Trello" />
-                  </Card.Header>
-                  <Card.Body px={5} py={5}>
-                    <TrelloForm
-                      onSubmit={this.onCreateTrelloCard}
-                      boards={trello.boards}
-                      onChangeBoard={this.onBoardChange}
-                      lists={trello.lists}
-                      labels={trello.labels}
-                      members={trello.members}
-                    />
-                  </Card.Body>
-                </Card>
+                { trello.error && <Alert.Error object={trello.error} /> }
+                { !integrations.length
+                  ? (<Card bg="secondary">
+                    <Card.Header>
+                      <Card.Title text={!integrations.length ? "No trello account available" : "Post it on Trello"} />
+                    </Card.Header>
+                    <Card.Body px={5} py={5}>
+                      <Text object={{"Info " : "In order to post this screen capture on trello you need to login then link your trello account"}} />
+                      <TextAlign align="center">
+                        <NavLink to={ROUTING.OPTIONS_PAGE}>
+                          Check your options page
+                        </NavLink>
+                      </TextAlign>
+                    </Card.Body>
+                  </Card>)
+                  : (<Card bg="secondary">
+                    <Card.Header>
+                      <Card.Title text="Post it on Trello" />
+                    </Card.Header>
+                    <Card.Body px={5} py={5}>
+                      <TrelloForm
+                        onSubmit={this.onCreateTrelloCard}
+                        boards={trello.boards}
+                        onChangeBoard={this.onBoardChange}
+                        lists={trello.lists}
+                        labels={trello.labels}
+                        members={trello.members}
+                      />
+                    </Card.Body>
+                  </Card>)
+                }
               </Col>
             </Row>
           </Container>
@@ -80,7 +108,8 @@ class TrelloPage extends React.Component {
 
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  removeScreenshot,
+  openTab,
+  removeMessages,
   fetchTrelloBoardLabels,
   fetchTrelloBoards,
   fetchTrelloBoardLists,
@@ -89,7 +118,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
 }, dispatch)
 
 const mapStateToProps = state => {
-  console.log(state.integrations)
   const { currentUser } = state.auth
   const { integrationsList: { integrations }, trello } = state.integrations
   const { screenshot: annotatedScreenshot } = state.screenshots

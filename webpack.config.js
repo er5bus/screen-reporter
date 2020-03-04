@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack')
 
 
 module.exports = {
@@ -14,6 +15,9 @@ module.exports = {
     publicPath: '/build/',
     chunkFilename: '[name].chunk.js',
   },
+  plugins: [
+    new Dotenv()
+  ],
   module: {
     rules: [
       {
@@ -57,7 +61,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(eot|ttf|woff|woff2)$/,
+        test: /\.(eot|mp3|ttf|woff|woff2)$/,
         use:'file-loader'
       }
     ]

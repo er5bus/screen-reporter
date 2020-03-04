@@ -1,117 +1,61 @@
 import React from 'react'
-import { NavLink, Redirect } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 
-import { ROUTING } from '../constants'
+import rules from '../utils/validation'
 
-import { editSettings, addIntegration, fetchIntegrations, fetchSettings, removeIntegration, editIntegration, logout } from '../actions'
-
-
-import Button from '../components/Button'
-import Col from '../components/Col'
-import Row from '../components/Row'
-import Container from '../components/Container'
-import Navbar from '../components/Navbar'
-import Card from '../components/Card'
+import InputText from '../components/InputText'
 import TextAlign from '../components/TextAlign'
-import TextMuted from '../components/TextMuted'
-import SettingsForm from '../components/SettingsForm'
+import Button from '../components/Button'
+import Form from '../components/Form'
+import Field from '../hocomponents/Field'
+import ColorPicker from '../components/ColorPicker'
+import Modal from '../components/Modal'
 import Alert from '../components/Alert'
-import TrelloButton from '../components/TrelloButton'
-import IntegrationList from '../components/IntegrationList'
 
 
-class SettingsPage extends React.Component {
+const TextField = Field(InputText)
+
+export default class SettingsPage extends React.Component {
 
   constructor(props) {
     super(props)
+    this.state = {color: props.initData.color}
   }
 
-  componentDidMount() {
-    this.props.fetchSettings()
-    this.props.fetchIntegrations()
+  onColorChange = (color) => {
+    this.setState({color: color.hex})
   }
 
-  onSubmit = (object) => {
-    this.props.editSettings(object)
-  }
-
-  onAuthSuccess = (apiKey) => {
-    this.props.addIntegration({
-      provider: "Trello",
-      api_key: apiKey
-    })
-  }
-
-  onAuthFailure = () => {
-    this.props.integrationError = { message: "Error authentication" }
-  }
-
-  onRemoveIntegration = (id) => {
-    this.props.removeIntegration(id)
-  }
-
-  onActivateIntegration = (integration, id) => {
-    this.props.editIntegration(integration, id)
-  }
-
-  render() {
-    const { settingsError, integrationError, currentUser, settings, integrations } = this.props
-    if (!currentUser){
-      return <Redirect to={ROUTING.LOGIN_PAGE} />
-    }else {
-      return (
-        <>
-          <Navbar>
-            <Navbar.Dropdown text={currentUser.fullname}>
-              <Navbar.DropdownLinkItem to={ROUTING.PROFILE_PAGE} text="Profile" />
-              <Navbar.DropdownLinkItem to={ROUTING.OPTIONS_PAGE} text="Settings" />
-              <Navbar.DropdownItem onClick={this.props.logout} text="Logout" />
-            </Navbar.Dropdown>
-          </Navbar>
-          <Container fullWidth={false}  mt={400}>
-            <Row>
-              <Col xl={8} lg={8} md={8} sm={12} >
-                { settingsError && <Alert message={settingsError} /> }
-                { integrationError && <Alert message={integrationError} /> }
-                <Card bg="secondary">
-                  <Card.Header>
-                    <Card.Title text="Settings" />
-                  </Card.Header>
-                  <Card.Body px={5} py={5}>
-                    <TextMuted align="center" mb={3} text="Integrations is like a project, which lives inside your existing issue tracking or project management tool."/>
-                    <TextAlign align="center" mb={5}>
-                      <TrelloButton onAuthSuccess={this.onAuthSuccess} onAuthFailure={this.onAuthFailure} />
-                    </TextAlign>
-                    { integrations && <IntegrationList integrations={integrations} onActivate={this.onActivateIntegration} onRemove={this.onRemoveIntegration} /> }
-                    <SettingsForm onSubmit={this.onSubmit} initData={settings} />
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-        </>
-      )
-    }
+  render () {
+    const { onSubmit, error, success, onClose, initData = {} } = this.props
+    return (
+      <Modal title="Settings" onClose={onClose}>
+        <Form onSubmit={(values) => onSubmit({...values, color: this.state.color})}>
+          <Modal.Body>
+            { error && <Alert.Error object={error} /> }
+            <TextField
+              name="fontsize"
+              type="text"
+              icon="ni-caps-small"
+              placeholder="Font size"
+              defaultValue={initData && initData.fontsize}
+              validate={[rules.required, rules.minLength(1), rules.maxLength(5)]}
+            />
+            <TextField
+              name="linewidth"
+              type="text"
+              icon="ni-vector"
+              placeholder="Line width"
+              defaultValue={initData && initData.linewidth}
+              validate={[rules.required, rules.digits, rules.min(4), rules.max(40)]}
+            />
+            <ColorPicker label="Choose a color" onChange={ this.onColorChange } color={this.state.color} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button text="Save settings" style="info" type="submit" />
+            <Button onClick={onClose} text="Close" style="primary" type="button" />
+          </Modal.Footer>
+        </Form>
+      </Modal>
+    )
   }
 }
-
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  editSettings,
-  fetchSettings,
-  fetchIntegrations,
-  editIntegration,
-  removeIntegration,
-  addIntegration,
-  logout
-}, dispatch)
-
-const mapStateToProps = state => {
-  const { currentUser } = state.auth
-  const { settings, error: settingsError } = state.settings
-  const { integrationsList: { integrations, error: integrationError  }} = state.integrations
-  return { currentUser, settings, settingsError, integrationError, integrations, integrationError }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage)

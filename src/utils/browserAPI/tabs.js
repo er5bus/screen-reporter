@@ -1,15 +1,21 @@
+import cameraClick from '../../assets/audio/camera-click.mp3'
+
+
 const chromeTabs = ( function () {
 
-  const browser = chrome.tabs
+  const tabs = chrome.tabs
   const extension = chrome.extension
+
+  const sound = new Audio(cameraClick)
 
   return {
     captureCurrentScreen : function (callback) {
-      browser.captureVisibleTab(callback)
+      sound.play()
+      tabs.captureVisibleTab(callback)
     },
     redirectToPage: function (page, route, callback=f=>f) {
       const url = `${page}#${route}`
-      browser.create({url}, callback)
+      tabs.create({url}, callback)
     }
   }
 }())

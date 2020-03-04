@@ -41,9 +41,9 @@ const Navbar = ({ children }) => (
 )
 
 
-Navbar.Item = ({text, onClick=f=>f}) => (
+Navbar.Item = ({text, disabled=false, onClick=f=>f}) => (
   <li className="nav-item">
-    <a href={window.location.href} onClick={onClick} className="nav-link">
+    <a href={window.location.href} onClick={!disabled ? onClick : undefined} className="nav-link">
       {text}
     </a>
   </li>

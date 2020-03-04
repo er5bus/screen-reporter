@@ -3,18 +3,19 @@ import { NavLink, Redirect } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { ROUTING } from '../constants'
+import { ROUTING, CAPTURE_ANNOTATION_OPTIONS } from '../constants'
 
 import Annotate from '../utils/imageAnnotate'
 
-import { fetchScreenshot, editScreenshot, editSettings } from '../actions'
+import { removeMessages, fetchScreenshot, editScreenshot, editSettings, editSettingsLocal } from '../actions'
 
-import ColorPicker from '../components/ColorPicker'
 import Container from '../components/Container'
 import Card from '../components/Card'
 import Navbar from '../components/Navbar'
 import Loader from '../components/Loader'
-import Modal from '../components/Modal'
+import SettingsPage from './SettingsPage'
+import TextAlign from '../components/TextAlign'
+import ErrorPage from '../components/ErrorPage'
 
 
 class ScreenCaptureEditor extends React.Component {
@@ -23,17 +24,28 @@ class ScreenCaptureEditor extends React.Component {
     super(props)
     this.imageAnnotateRef = React.createRef()
     this.annotate = undefined
-    this.state = { color: this.props.settings.color || "red" }
+    this.state = { showModal: false }
   }
 
   componentDidMount() {
+    this.props.removeMessages()
     this.props.fetchScreenshot(this.props.match.params)
   }
 
-  componentDidUpdate() {
-    const { settings, screenshot } = this.props
-    if (settings && screenshot && !this.annotate && this.imageAnnotateRef){
-      this.annotate = new Annotate(this.imageAnnotateRef.current, { ...settings, ...{ images: [screenshot.imageURI] } })
+  componentDidUpdate(prevProps, prevState) {
+
+    const { settingsSuccess, settingsError } = prevProps
+    if (settingsSuccess || settingsError) {
+      this.props.removeMessages()
+    }
+
+    const { settings, screenshot, screenshotError, settingsSuccess: success } = this.props
+    if (settings && screenshot && !this.annotate && this.imageAnnotateRef && !screenshotError){
+      this.annotate = new Annotate(this.imageAnnotateRef.current, { ...settings, ...{ images: [screenshot.imageURI] }, tools: "#js-tools-menu" })
+    }
+    if (this.annotate && success) {
+      this.annotate.updateOptions(settings)
+      this.setState({ showModal: false })
     }
   }
 
@@ -42,13 +54,21 @@ class ScreenCaptureEditor extends React.Component {
     this.imageAnnotateRef = undefined
   }
 
-  onColorChange = (color) => {
-    this.annotate.updateColor(color.hex)
-    this.setState({ color: color.hex })
+  onEditSettings = (values) => {
+    const { currentUser} = this.props
+    if (currentUser){
+      this.props.editSettings(values)  
+    }else {
+      this.props.editSettingsLocal(values)
+    }
+  }
+
+  onShowSettings = (e) => {
+    this.setState({ showModal: !this.state.showModal })
   }
 
   onDownloadScreenCapture = (e) => {
-    this.annotate.exportImage({type: "image/jpeg", quality: 1}, (imageBase64) => {
+    this.annotate.exportImage(CAPTURE_ANNOTATION_OPTIONS, (imageBase64) => {
       const a = document.createElement("a")
       a.href = imageBase64
       a.download = `${this.props.screenshot.uuid}.jpeg`
@@ -60,30 +80,37 @@ class ScreenCaptureEditor extends React.Component {
   onContinue = (e) => {
     e.preventDefault()
     const { screenshot } = this.props
-    this.annotate.exportImage({type: "image/jpeg", quality: 1}, (imageURI) =>
+    this.annotate.exportImage(CAPTURE_ANNOTATION_OPTIONS, (imageURI) =>
       this.props.editScreenshot({ ...screenshot, imageURI }, { uuid: screenshot.uuid })
     )
     this.props.history.push(ROUTING.TRELLO_PAGE)
   }
 
   render() {
-    const { settings, currentUser, screenshot, error } = this.props
-    if (!currentUser){
-      return <Redirect to={ROUTING.LOGIN_PAGE} />
+    const { settings, currentUser, screenshot, screenshotError, settingsError, settingsSuccess } = this.props
+    if (screenshotError){
+      return (<ErrorPage code={404} message="Looks like the screen capture you looking for is no longer here" />)
     }else {
       return (
         <>
           <Navbar>
+            <TextAlign mr={5} >
+              <div id="js-tools-menu" />
+            </TextAlign>
+            <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="Options" />
+            <Navbar.Item onClick={this.onShowSettings} text="Settings" />
             <Navbar.Item onClick={this.onDownloadScreenCapture} text="Download" />
-            <Navbar.Item onClick={this.onContinue} text="Continue" />
+            <Navbar.Item onClick={this.onContinue} text="Post on Trello" />
           </Navbar>
-          <Container>
+          { this.state.showModal &&
+          <SettingsPage
+            error={settingsError}
+            onSubmit={this.onEditSettings}
+            onClose={this.onShowSettings}
+            initData={settings}
+          /> }
+          <Container mt={500}>
             <Card overflow={true}>
-              <Card.Header pb={3}>
-                <div>
-                  <ColorPicker label="Choose a color" onChange={ this.onColorChange } color={this.state.color} />
-                </div>
-              </Card.Header>
               <Card.Body>
                 <div ref={this.imageAnnotateRef} />
               </Card.Body>
@@ -91,16 +118,17 @@ class ScreenCaptureEditor extends React.Component {
           </Container>
         </>
       )
+
     }
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchScreenshot, editSettings, editScreenshot }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({ removeMessages, fetchScreenshot, editSettings, editScreenshot, editSettingsLocal }, dispatch)
 const mapStateToProps = state => {
   const { currentUser } = state.auth
-  const { settings } = state.settings
-  const { screenshot, error } = state.screenshots
-  return { currentUser, settings, screenshot, error }
+  const { settings, error: settingsError, success: settingsSuccess } = state.settings
+  const { screenshot, error: screenshotError } = state.screenshots
+  return { currentUser, settings, screenshot, settingsError, settingsSuccess, screenshotError }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScreenCaptureEditor)

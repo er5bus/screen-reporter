@@ -32,16 +32,16 @@ Alert.Error = ({object, style="danger" }) => {
 }
 
 
-Alert.Success = ({ object, style="success" }) => {
-  
+Alert.Success = ({message, style="success"}) => {
   const transformMessage = () => {
-    if (typeof object === 'object' && Object.entries(object).length){
-      return Object.entries(object).map(([key, value], i) =>
+
+    if (typeof message === 'object' && Object.entries(message).length){
+      return Object.entries(message).map(([key, value], i) =>
         (<p key={key} className="m-0 p-0"><strong key={key}>{key.toUpperCase()}: </strong>{Array.isArray(value) ? value.join(', ') : value}</p>)
       )
     }
     
-    return (<p className="m-0 p-0"><strong>Well done! </strong>{object}</p>)
+    return (<p className="m-0 p-0"><strong>Well done! </strong>{message}</p>)
   }
 
   return (
@@ -50,6 +50,3 @@ Alert.Success = ({ object, style="success" }) => {
     </Alert>
   )
 }
-
-
-export default Alert

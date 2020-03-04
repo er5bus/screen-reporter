@@ -11,7 +11,7 @@ export default Component =>
     }
 
     onBlur = (event) => {
-      const value = (event.target && event.target.value) || event.value
+      const value = (event && event.target) ? event.target.value : event.value
       const { onChange=false, validate } = this.props
       let { error } = this.state
       if (validate){

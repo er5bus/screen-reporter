@@ -1,7 +1,7 @@
 import React from 'react'
 
 import rules from '../utils/validation'
-
+import browserInfo from '../utils/browserInfo'
 
 import InputText from './InputText'
 import InputSelect from './InputSelect'
@@ -22,22 +22,23 @@ export default ({ onSubmit=f=>f, onChangeBoard=f=>f, boards, lists, members, lab
       <SelectField 
         name="board"
         placeholder="Select Board" 
-        label="Board"
+        label="Board *"
         onChange={onChangeBoard}
         options={boards}
         validate={[rules.required]} 
       />
       <TextField 
-        name="description"
+        name="name"
         type="text"
         placeholder="Explain your feedback" 
         validate={rules.required} 
       />
       <TextareaField 
-        name="name"
+        name="description"
         type="text"
         placeholder="Descriptions (steps to reproduce)" 
         validate={[rules.required]} 
+        defaultValue={browserInfo}
       />
       <SelectField 
         name="list"

@@ -7,6 +7,7 @@ export const register = (payload) =>
     payload,
     meta: {
       actions: {
+        init: ACTIONS.REMOVE_MESSAGES,
         success: ACTIONS.CREATE_ACCOUNT_SUCCEEDED,
         fail: ACTIONS.CREATE_ACCOUNT_FAILED
       },
@@ -22,6 +23,7 @@ export const editProfile = (payload, param) =>
     payload,
     meta: {
       actions: {
+        init: ACTIONS.REMOVE_MESSAGES,
         success: ACTIONS.UPDATE_ACCOUNT_SUCCEDED,
         fail: ACTIONS.UPDATE_ACCOUNT_FAILED
       },
@@ -37,6 +39,7 @@ export const login = (payload) =>
     payload,
     meta: {
       actions: {
+        init: ACTIONS.REMOVE_MESSAGES,
         success: ACTIONS.LOGIN_ACCOUNT_SUCCEDED,
         fail: ACTIONS.LOGIN_ACCOUNT_FAILED
       },
@@ -46,11 +49,19 @@ export const login = (payload) =>
   })
 
 
+export const openTab = (payload) => 
+  ({
+    type: ACTIONS.CALL_TAB,
+    payload
+  })
+
+
 export const resetPassword = (param) =>
   ({
     type: ACTIONS.CALL_API,
     meta: {
       actions: {
+        init: ACTIONS.REMOVE_MESSAGES,
         success: ACTIONS.RESET_PASSWORD_SUCCEDED,
         fail: ACTIONS.RESET_PASSWORD_FAILED
       },
@@ -81,6 +92,7 @@ export const editSettings = (payload) =>
     payload,
     meta: {
       actions: {
+        init: ACTIONS.REMOVE_MESSAGES,
         success: ACTIONS.EDIT_SETTINGS_SUCCEDED,
         fail: ACTIONS.EDIT_SETTINGS_FAILED
       },
@@ -89,6 +101,14 @@ export const editSettings = (payload) =>
       jwt: true
     }
   })
+
+
+export const editSettingsLocal = (payload) =>
+  ({
+    type: ACTIONS.EDIT_SETTINGS_SUCCEDED,
+    payload,
+  })
+
 
 
 export const fetchSettings = () =>
@@ -112,6 +132,7 @@ export const addIntegration = (payload) =>
     payload,
     meta: {
       actions: {
+        init: ACTIONS.REMOVE_MESSAGES,
         success: ACTIONS.ADD_INTEGRATION_SUCCEDED,
         fail: ACTIONS.ADD_INTEGRATION_FAILED
       },
@@ -143,6 +164,7 @@ export const editIntegration = (payload, param) =>
     payload,
     meta: {
       actions: {
+        init: ACTIONS.REMOVE_MESSAGES,
         success: ACTIONS.EDIT_INTEGRATION_SUCCEDED,
         fail: ACTIONS.EDIT_INTEGRATION_FAILED
       },
@@ -159,6 +181,7 @@ export const removeIntegration = (param) =>
     payload: { id: param},
     meta: {
       actions: {
+        init: ACTIONS.REMOVE_MESSAGES,
         success: ACTIONS.REMOVE_INTEGRATION_SUCCEDED,
         fail: ACTIONS.REMOVE_INTEGRATION_FAILED
       },
@@ -205,8 +228,8 @@ export const removeScreenshot = (criteria) =>
     payload: { criteria },
     meta: {
       actions: {
-        success: ACTIONS.FETCH_SCREENSHOT_SUCCEDED,
-        fail: ACTIONS.FETCH_SCREENSHOT_FAILED
+        success: ACTIONS.REMOVE_SCREENSHOT_SUCCEDED,
+        fail: ACTIONS.REMOVE_SCREENSHOT_FAILED
       },
       storage: STORAGE.SCREEN_CAPTURE,
       method: STORAGE_METHODS.REMOVE_ITEM
@@ -249,6 +272,7 @@ export const fetchTrelloBoardLists = (param) =>
     type: ACTIONS.CALL_API,
     meta: {
       actions: {
+        init: ACTIONS.REMOVE_MESSAGES,
         success: ACTIONS.FETCH_TRELLO_LISTS_SUCCEDED,
         fail: ACTIONS.FETCH_TRELLO_LISTS_FAILED
       },
@@ -264,6 +288,7 @@ export const fetchTrelloBoardLabels = (param) =>
     type: ACTIONS.CALL_API,
     meta: {
       actions: {
+        init: ACTIONS.REMOVE_MESSAGES,
         success: ACTIONS.FETCH_TRELLO_LABELS_SUCCEDED,
         fail: ACTIONS.FETCH_TRELLO_LABELS_FAILED
       },
@@ -288,4 +313,10 @@ export const createTrelloCard = (payload) =>
       method: HTTP_METHODS.POST,
       jwt: true
     }
+  })
+
+
+export const removeMessages = () =>
+  ({
+    type: ACTIONS.REMOVE_MESSAGES
   })

@@ -10,7 +10,7 @@ export default ({ color, onChange, label='Choose a Color' }) => {
   return (
     <div>
       <div onClick={ () => setDisplayColorPicker(!displayColorPicker) } className="color-picker-label">
-        <span><b>{label}</b></span> : <ColorIcon color={color} />
+        <span>{label}</span> : <ColorIcon color={color} />
       </div>
       { displayColorPicker && <div className="color-picker-popover">
         <div className="color-picker-cover" onClick={ () => setDisplayColorPicker(false) } />

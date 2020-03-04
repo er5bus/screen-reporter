@@ -7,7 +7,7 @@ export default props => {
     <div className="form-group">
       <div className={("input-group input-group-alternative mb-3 ") + ( error ? " has-danger " : "")}>
         <textarea 
-          rows="3"
+          rows="9"
           className={("form-control form-control-alternative") + (error ? " is-invalid ": "")}
           onBlur={onBlur}
           {...input}

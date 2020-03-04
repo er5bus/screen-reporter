@@ -2,7 +2,7 @@ import React from 'react'
 import browser from '../utils/browserAPI'
 import { TRELLO, PAGES } from '../constants'
 
-import trello from '../assets/img/trello-logo.svg'
+import trello from '../assets/img/trello-icon.svg'
 
 import ButtonIcon from './ButtonIcon'
 
@@ -42,6 +42,6 @@ export default ({ buttonText, onAuthSuccess=f=>f, onAuthFailure=f=>f }) => {
   }
 
   return (
-    <ButtonIcon icon={trello} onClick={authorize} />
+    <ButtonIcon icon={trello} onClick={authorize} text="Link your trello account" />
   )
 }

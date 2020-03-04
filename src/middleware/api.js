@@ -11,6 +11,7 @@ export const api = store => next => action => {
   const { token=null } = store.getState().auth
   
   if (jwt && !token){
+    console.log(token)
     return next(action)
   }
  

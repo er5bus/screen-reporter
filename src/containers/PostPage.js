@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { ROUTING } from '../constants'
 
-import { removeScreenshot } from '../actions'
+import { removeScreenshot, removeMessages } from '../actions'
 
 import Button from '../components/Button'
 import Col from '../components/Col'
@@ -24,19 +24,22 @@ class PostPage extends React.Component {
     super(props)
   }
 
-  componentUnMount() {
-    const { annotatedScreenshot: { uuid } } = this.props
-    this.props.removeScreenshot({ uuid })
+  componentDidUpdate(prevProps, prevState) {
+    const { annotatedScreenshot=null, trello: { success } } = this.props
+    if (success && annotatedScreenshot){
+      this.props.removeScreenshot({ uuid: annotatedScreenshot.uuid })
+    }
   }
 
   render () {
-    const { annotatedScreenshot, trello } = this.props
-    if (!annotatedScreenshot){
+    const { trello } = this.props
+    if (!trello.initCardCreation){
       return <Redirect to={ROUTING.LOGIN_PAGE} />
     }else {
       return (
         <>
           <Navbar>
+            <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="Options" />
           </Navbar>
           <Container fullWidth={false}  mt={200}>
             <Row>
@@ -46,7 +49,6 @@ class PostPage extends React.Component {
                     <Card.Title text="Post it on Trello" />
                   </Card.Header>
                   <Card.Body px={5} py={5}>
-                    { console.log(trello.success) }
                     { trello.success && (<Text object={trello.success} />) }
                     { trello.error && (<Text object={trello.error} />) }
                     { !(trello.error || trello.success) && <Text object={{"Please wait" : "Your card is about to be created"}} /> }
@@ -62,7 +64,7 @@ class PostPage extends React.Component {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ removeScreenshot }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({ removeScreenshot, removeMessages }, dispatch)
 
 const mapStateToProps = state => {
   const { currentUser } = state.auth

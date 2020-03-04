@@ -13,8 +13,8 @@ Card.Body = ({children, px=0, py=0}) => (
 )
 
 
-Card.Header = ({children, pb=0 }) => (
-  <div className={`card-header pb-${pb}`}>
+Card.Header = ({children, pb=0, align="left" }) => (
+  <div className={`card-header pb-${pb} text-${align}`}>
     {children}
   </div>
 )

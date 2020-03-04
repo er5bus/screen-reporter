@@ -18,11 +18,10 @@ import configureStore from './configureStore'
 import Loader from './components/Loader'
 
 // error handling
-import ErrorBoundaryPage from './containers/ErrorBoundaryPage'
 import ErrorPage from './components/ErrorPage'
 
 // pages
-const SettingsPage = React.lazy(() => import('./containers/SettingsPage'))
+const IntegrationPage = React.lazy(() => import('./containers/IntegrationPage'))
 const ScreenCapturePage = React.lazy(() => import('./containers/ScreenCapturePage'))
 const ForgotPasswordPage = React.lazy(() => import('./containers/ForgotPasswordPage'))
 const LoginPage = React.lazy(()  => import('./containers/LoginPage'))
@@ -46,7 +45,7 @@ browser.storage.getItem(STORAGE.STORE, INIT_STATE)
             <div className="main">
               <Suspense fallback={<Loader />}>
                 <Switch>
-                  <Route strict exact path={ROUTING.OPTIONS_PAGE} component={SettingsPage} />
+                  <Route strict exact path={ROUTING.OPTIONS_PAGE} component={IntegrationPage} />
                   <Route exact path={ROUTING.SCREEN_CAPTURE_EDITOR.PATH} component={ScreenCapturePage} />
                   <Route exact path={ROUTING.LOGIN_PAGE} component={LoginPage} />
                   <Route exact path={ROUTING.REGISTER_PAGE} component={RegisterPage} />

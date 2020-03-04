@@ -17,6 +17,7 @@ import pan from "../../assets/img/pan.png"
 export default function Annotate(el, options) {
   this.options = options;
   this.$el = $(el);
+  this.$toolElem = $(options.tools)
   this.clicked = false;
   this.fromx = null;
   this.fromy = null;
@@ -111,9 +112,8 @@ Annotate.prototype = {
       ' <img src="'+ redo +'" /></button>' +
       '</div></div>';
     self.$tool = $(self.$tool);
-    $('.annotate-container').append(self.$tool);
-    //self.$el.append(self.$tool)
-    //.insertBefore($('.annotate-container').parent('div'))
+    self.$toolElem.append(self.$tool);
+    //self.$el.append(self.$tool).insertBefore($('.annotate-container'))
     var canvasPosition = self.$el.offset();
     self.$textbox = $('<textarea id=""' +
       ' style="position:absolute;z-index:100000;display:none;top:0;left:0;' +
@@ -136,7 +136,7 @@ Annotate.prototype = {
     }
     self.$tool.on('change', 'input[name^="tool_option"]', function(e) {
       self.$el.css({cursor: 'crosshair'});
-      self.$el.find('.tool-button').removeClass('active')
+      self.$toolElem.find('.tool-button').removeClass('active')
       $(this).parent('label').addClass('active')
       self.selectTool($(this));
     });
@@ -208,8 +208,7 @@ Annotate.prototype = {
       id = newImage;
       path = newImage;
     }
-    if (id === '' || typeof id === 'undefined' || self.selectBackgroundImage(
-      id)) {
+    if (id === '' || typeof id === 'undefined' || self.selectBackgroundImage(id)) {
       id = self.generateId(10);
       while (self.selectBackgroundImage(id)) {
         id = self.generateId(10);
@@ -679,10 +678,20 @@ Annotate.prototype = {
       self.clear();
     }
   },
-  updateColor: function (color) {
-    this.options.color = color
-    this.redraw()
-    this.clear()
+  updateOptions: function (options) {
+    this.options = $.extend({}, this.options, options)
+    this.exportImage({
+      type: 'image/jpeg',
+      quality: 1
+    }, (imageURI) => {
+      const image = {
+        id: 1,
+        path: imageURI,
+        storedUndo: [],
+        storedElement: []
+      }
+      this.setBackgroundImage(image)
+    })
   },
   getColor: function () {
     return JSON.parse(JSON.stringify( this.options.color ))

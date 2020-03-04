@@ -32,12 +32,10 @@ ArrayList.prototype = {
   update: function (criteria, data) {
     const key = Object.keys(this.data).filter((key) => this.criteriaCallback(criteria)(this.data[key]) ).pop()
     this.data[key] = {...this.data[key], ...data}
-    console.log(this.data[key])
   },
   delete: function (criteria) {
-    const key = Object.keys(this.data).filter((key) => this.criteriaCallback(criteria)(this.data[key]) ).pop()
-    console.log("delete")
-    delete this.data[key]
+    const deletedKey = Object.keys(this.data).filter((key) => this.criteriaCallback(criteria)(this.data[key]) ).pop()
+    delete this.data[deletedKey]
   },
   map: function (callback=f=>f) {
     return Object.keys(this.data).map((object) => callback.apply(this, [object]) )
@@ -75,7 +73,6 @@ const chromeStorage = ( function () {
     getItem: ( key, defaultValue = [] ) => new Promise((resolve, reject) => {
       try {
         browser.get(key, (items) => {
-          console.log(items)
           resolve((items[key] && JSON.parse(items[key])) || defaultValue)
         })
       }catch(e) {
@@ -85,6 +82,10 @@ const chromeStorage = ( function () {
     setItem: (key, value) => new Promise((resolve, reject) => {
       try {
         browser.set({[key]: JSON.stringify(value)}, items => {
+          const error = chrome.runtime.lastError;
+          if (error){
+            reject(error)
+          }
           resolve(true)
         })
       }catch(e) {
@@ -92,14 +93,15 @@ const chromeStorage = ( function () {
       }
     }),
     searchForItem: function (key, criteria, resolve=f=>f, reject=f=>f) {
-      console.log(key)
       this.getItem(key)
         .then((items) => {
-          console.log(items)
           const itemsArray = new ArrayList(items)
-          const item = itemsArray.findOne(criteria)          
-          console.log(itemsArray, item)
-          resolve(item || null)
+          const item = itemsArray.findOne(criteria)
+          if (item){
+            resolve(item)
+          }else {
+            throw new Error("item not found")
+          }
         })
         .catch((err) => reject(err))
     },
@@ -108,14 +110,13 @@ const chromeStorage = ( function () {
         .then((items) => {
           const itemsArray = new ArrayList(items)
           itemsArray.update(criteria, updatedItem)
-          console.log(itemsArray)
           this.setItem(key, itemsArray.getData())
             .then((done) => resolve(updatedItem))
             .catch((err) => reject(err))
         })
         .catch((err) => reject(err))
     },
-    removItem: function (key, criteria, resolve=f=>f, reject=f=>f) {
+    removeItem: function (key, criteria, resolve=f=>f, reject=f=>f) {
       this.getItem(key)
         .then((items) => {
           const itemsArray = new ArrayList(items)
@@ -127,14 +128,11 @@ const chromeStorage = ( function () {
         .catch((err) => reject(err))
     },
     addItem: function (key, object, resolve=f=>f, reject=f=>f) {
-      this.getItem(key)
-        .then((items) => {
-          const itemsList = new ArrayList(items)
-          itemsList.addItem(object)
-          this.setItem(key, itemsList.getData())
-            .then((res) => resolve(res))
-            .catch((err) => reject(err))
-        })
+      const newItemsList = new ArrayList()
+      newItemsList.addItem(object)
+      this.setItem(key, newItemsList.getData())
+        .then((res) => resolve(res))
+        .catch((err) => reject(err))
     },
     onChange: function (callback) {
       browser.storage.onChanged.addListener(callback)

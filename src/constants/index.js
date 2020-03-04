@@ -1,6 +1,6 @@
 export const PAGE = "index.html"
 
-export const API_BASE_URL = 'http://127.0.0.1:5000'
+export const API_BASE_URL = process.env.API_BASE_URL
 
 export const ROUTING = {
   OPTIONS_PAGE: "/options",
@@ -18,7 +18,7 @@ export const ROUTING = {
 
 export const TRELLO = {
   AUTH_URL: "https://trello.com/1/authorize",
-  TOKEN: "22ac062e43a16df65c5325dd965f3d1a",
+  TOKEN: process.env.TRELLO_TOKEN,
   APP_NAME:  "Screen reporter App",
   RESPONSE_TYPE: "token",
   CALLBACK_METHOD: "fragment",
@@ -30,9 +30,17 @@ export const CAPTURE_OPTIONS = {
   format: 'jpeg'
 }
 
+export const CAPTURE_ANNOTATION_OPTIONS = {
+  type: "image/jpeg", 
+  quality: 1
+}
+
 export const ACTIONS = {
   CALL_API: 'CALL_API',
   CALL_STORAGE: 'CALL_STORAGE',
+  CALL_TAB: 'CALL_TAB',
+
+  REMOVE_MESSAGES: 'REMOVE_MESSAGES',
 
   SAVE_ANNOTATED_IMAGE: 'SAVE_ANNOTATED_IMAGE',
 
@@ -145,8 +153,8 @@ export const INIT_STATE = {
     error:null
   },
   integrations: {
-    integrationsList: {integrations: [], error: null},
-    trello: { boards: [], labels: [], lists: [], members: [], success:null, error:null }
+    integrationsList: {integrations: [], success: null, error: null},
+    trello: { boards: [], labels: [], lists: [], members: [], initCardCreation: false, success:null, error:null }
   } ,
   settings: {
     settings: {
@@ -154,11 +162,12 @@ export const INIT_STATE = {
       fontsize: '20px',
       linewidth: 5
     },
+    success: null,
     error: null
   },
   screenshots: {
-    screenshots: [],
-    annotatedScreenshot: {},
+    screenshot: null,
+    annotatedScreenshot: null,
     error: null
   }
 }

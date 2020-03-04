@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { ROUTING } from '../constants'
-import { resetPassword } from '../actions'
+import { removeMessages, resetPassword } from '../actions'
 
 import Button from '../components/Button'
 import Col from '../components/Col'
@@ -24,6 +24,10 @@ class ForgotPassword extends React.Component {
     super(props)
   }
 
+  componentDidMount() {
+    this.props.removeMessages()
+  }
+
   onFormSubmit = (values) => {
     this.props.resetPassword(values.email)
   }
@@ -39,8 +43,8 @@ class ForgotPassword extends React.Component {
           <Container fullWidth={false} mt={300}>
             <Row>
               <Col xl={6} lg={7} md={8} sm={12} >
-                { error && <Alert message={error} /> }
-                { success && <Alert type="success" message={success} /> }
+                { error && <Alert.Error object={error} /> }
+                { success && <Alert.Success object={success} /> }
                 <Card bg="secondary">
                   <Card.Header>
                     <Card.Title text="Recover Your Password" />
@@ -71,7 +75,7 @@ class ForgotPassword extends React.Component {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ resetPassword }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({ removeMessages, resetPassword }, dispatch)
 const mapStateToProps = state => state.auth
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword)

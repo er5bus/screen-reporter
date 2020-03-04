@@ -11,7 +11,6 @@ export const browserStorage = store => next => action => {
 
   switch (method) {
     case STORAGE_METHODS.GET_ITEM : {
-      console.log(action.payload)
       const key = Object.keys(action.payload.criteria).pop()
       browser.storage.searchForItem(
         storage,
@@ -22,7 +21,7 @@ export const browserStorage = store => next => action => {
       break
     }
     case STORAGE_METHODS.SET_ITEM : {
-      browser.storage.addItem(
+      browser.storage.setItem(
         storage,
         payload,
         (res) => next(create_action(actions.success, res)),
