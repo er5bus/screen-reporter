@@ -694,9 +694,7 @@ __webpack_require__.r(__webpack_exports__);
   *  Browser Version: ${version}
   *  Browser Major Version: ${majorVersion}
   *  Mobile: ${mobile}
-  *  OS: ${os}
-  *  osVersion: ${osVersion}
-  -------------------------------------`;
+  *  OS: ${os}`;
 })(window));
 
 /***/ }),

@@ -177,7 +177,5 @@ export default (function (window) {
   *  Browser Version: ${version}
   *  Browser Major Version: ${majorVersion}
   *  Mobile: ${mobile}
-  *  OS: ${os}
-  *  osVersion: ${osVersion}
-  -------------------------------------`
+  *  OS: ${os}`
 }(window))
