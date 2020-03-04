@@ -33,3 +33,5 @@ Then start webpack :
 ```bash
 $ npm start
 ```
+
+Finally Add chrome folder to the chrome extension.
