@@ -1,0 +1,8 @@
+screen_reporter:
+  build: .
+  volumes:
+    - ./.babelrc:/app/.babelrc
+    - ./src:/app/src
+    - ./.env:/app/.env
+    - ./webpack.config.js:/app/webpack.config.js
+    - ./chrome/build:/app/chrome/build

@@ -3,7 +3,6 @@
   "description": "Report visual bugs directly into your existing issue tracking tool like Trello.",
   "version": "1",
   "manifest_version": 2,
-  "content_security_policy": "script-src 'self' https://code.jquery.com https://trello.com 'unsafe-eval'; object-src 'self'",
   "background": {
     "scripts": ["build/backgroundScript.js"],
     "persistent": false
@@ -21,8 +20,6 @@
   },
   "permissions": [
     "storage",
-    "tabs",
-    "<all_urls>",
     "activeTab",
     "identity",
     "*://*.trello.com/"

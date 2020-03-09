@@ -20,18 +20,7 @@ TRELLO_TOKEN=trello key
 Run this command to start webpack:
 
 ``` bash
-$ docker run -v $(pwd)/src:/app/src -v $(pwd)/webpack.config.js:/app/webpack.config.js -v $(pwd)/.babelrc:/app/.babelrc -v $(pwd)/.env:/app/.env -v $(pwd)/chrome:/app/chrome chrome_extension
-```
-
-Or open the container with :
-
-```bash
-$ docker run -v $(pwd)/src:/app/src -v $(pwd)/webpack.config.js:/app/webpack.config.js -v $(pwd)/.babelrc:/app/.babelrc -v $(pwd)/.env:/app/.env -v $(pwd)/chrome:/app/chrome -it -u root chrome_extension /bin/bash
-```
-
-Then start webpack :
-```bash
-$ npm start
+$ docker-compose up -d
 ```
 
 Finally Add chrome folder to the chrome extension.
