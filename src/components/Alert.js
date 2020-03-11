@@ -1,5 +1,5 @@
 import React from 'react'
-import FadeIn from './FadeIn'
+import FadeIn from 'react-fade-in'
 
 
 const Alert = ({children, style }) => (
