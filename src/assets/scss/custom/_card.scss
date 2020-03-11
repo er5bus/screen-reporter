@@ -1,5 +1,8 @@
 .card {
     position: relative;
+    .card-body {
+      position: relative;
+    }
 }
 
 .card-overflow {

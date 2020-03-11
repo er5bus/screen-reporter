@@ -1,7 +1,7 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import { HashRouter as Router } from 'react-router-dom'
 
 import browser from './utils/browserAPI'
 
@@ -14,21 +14,11 @@ import './assets/scss/main.scss'
 // store
 import configureStore from './configureStore'
 
-// loader
-import Loader from './components/Loader'
-
 // error handling
 import ErrorPage from './components/ErrorPage'
 
-// pages
-const IntegrationPage = React.lazy(() => import('./containers/IntegrationPage'))
-const ScreenCapturePage = React.lazy(() => import('./containers/ScreenCapturePage'))
-const ForgotPasswordPage = React.lazy(() => import('./containers/ForgotPasswordPage'))
-const LoginPage = React.lazy(()  => import('./containers/LoginPage'))
-const RegisterPage = React.lazy(() => import('./containers/RegisterPage'))
-const TrelloPage = React.lazy(() => import('./containers/TrelloPage'))
-const PostPage = React.lazy(() => import('./containers/PostPage'))
-const ProfilePage = React.lazy(() => import('./containers/ProfilePage'))
+// Router container
+import RoutesContainer from './routes'
 
 
 browser.storage.getItem(STORAGE.STORE, INIT_STATE)
@@ -42,23 +32,7 @@ browser.storage.getItem(STORAGE.STORE, INIT_STATE)
     render(
       <Provider store={store}>
         <Router>
-            <div className="main">
-              <Suspense fallback={<Loader />}>
-                <Switch>
-                  <Route strict exact path={ROUTING.OPTIONS_PAGE} component={IntegrationPage} />
-                  <Route exact path={ROUTING.SCREEN_CAPTURE_EDITOR.PATH} component={ScreenCapturePage} />
-                  <Route exact path={ROUTING.LOGIN_PAGE} component={LoginPage} />
-                  <Route exact path={ROUTING.REGISTER_PAGE} component={RegisterPage} />
-                  <Route exact path={ROUTING.FORGOT_PASSWORD_PAGE} component={ForgotPasswordPage} />
-                  <Route exact path={ROUTING.TRELLO_PAGE} component={TrelloPage} />
-                  <Route exact path={ROUTING.POST_PAGE} component={PostPage} />
-                  <Route exact path={ROUTING.PROFILE_PAGE} component={ProfilePage} />
-                  <Route>
-                    <ErrorPage code={404} message="Looks like the page you were looking for is no longer here" />
-                  </Route>
-                </Switch>
-              </Suspense>
-            </div>
+          <RoutesContainer />
         </Router>
       </Provider>,
       document.getElementById('root')

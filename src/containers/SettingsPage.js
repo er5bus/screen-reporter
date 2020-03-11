@@ -26,9 +26,9 @@ export default class SettingsPage extends React.Component {
   }
 
   render () {
-    const { onSubmit, error, success, onClose, initData = {} } = this.props
+    const { onSubmit, error, success, show, onClose, initData = {} } = this.props
     return (
-      <Modal title="Settings" onClose={onClose}>
+      <Modal title="Settings" show={show} onClose={onClose}>
         <Form onSubmit={(values) => onSubmit({...values, color: this.state.color})}>
           <Modal.Body>
             { error && <Alert.Error object={error} /> }

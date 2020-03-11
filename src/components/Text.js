@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default ({align='left', mb=0, mt=0, object}) => {
+export default ({align='left', mb=0, mt=0, text=null, object=null}) => {
   const renderElem = () => {
     if (typeof object === 'string' && !/<[a-z/][\s\S]*>/i.test(object)){
       return (<p key={0} className="m-0 p-0"><strong key={0}>Oops! </strong>{object}</p>)
@@ -15,7 +15,8 @@ export default ({align='left', mb=0, mt=0, object}) => {
 
   return (
     <div className="text-center">
-    {renderElem(object)}
+    { object !== null && renderElem(object)}
+    {text !== null && <p className="m-0 p-0">{text}</p>}
     </div>
   )
 }

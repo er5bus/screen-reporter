@@ -4,6 +4,10 @@ import { ACTIONS } from '../../constants'
 const trelloReducer = (state = { boards: [], lists: [], labels: [], members: [], initCardCreation: false , success: null, error:null }, action) => {
   const { payload, type } = action
   switch (type) {
+
+    case ACTIONS.FETCH_TRELLO_BOARDS_INIT : {
+      return { ...state, boards: [], lists: [], labels: [], members: [], initCardCreation: false, error: null, success: null  }
+    }
     case ACTIONS.FETCH_TRELLO_BOARDS_SUCCEDED : {
       return { ...state, boards: payload.items, error: null }
     }

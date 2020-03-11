@@ -3,6 +3,8 @@ import { NavLink, Redirect } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import Draggable from 'react-draggable'
+
 import { ROUTING, CAPTURE_ANNOTATION_OPTIONS } from '../constants'
 
 import Annotate from '../utils/imageAnnotate'
@@ -88,22 +90,21 @@ class ScreenCaptureEditor extends React.Component {
 
   render() {
     const { settings, currentUser, screenshot, screenshotError, settingsError, settingsSuccess } = this.props
+    const { showModal } = this.state
     if (screenshotError){
       return (<ErrorPage code={404} message="Looks like the screen capture you looking for is no longer here" />)
     }else {
       return (
         <>
           <Navbar>
-            <TextAlign mr={5} >
-              <div id="js-tools-menu" />
-            </TextAlign>
             <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="Options" />
             <Navbar.Item onClick={this.onShowSettings} text="Settings" />
             <Navbar.Item onClick={this.onDownloadScreenCapture} text="Download" />
             <Navbar.Item onClick={this.onContinue} text="Post on Trello" />
           </Navbar>
-          { this.state.showModal &&
+          { showModal &&
           <SettingsPage
+            show={showModal}
             error={settingsError}
             onSubmit={this.onEditSettings}
             onClose={this.onShowSettings}
@@ -112,7 +113,11 @@ class ScreenCaptureEditor extends React.Component {
           <Container mt={500}>
             <Card overflow={true}>
               <Card.Body>
-                <div ref={this.imageAnnotateRef} />
+                <div ref={this.imageAnnotateRef}>
+                <Draggable bounds="parent" defaultPosition={{x: window.innerWidth / 2.5, y: 25}}>
+                  <div className="group-annotate" id="js-tools-menu" />
+                </Draggable>  
+                </div>
               </Card.Body>
             </Card>
           </Container>

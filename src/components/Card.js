@@ -2,7 +2,7 @@ import React from 'react'
 
 
 const Card = ({ children, bg=null, overflow=false }) => (
-  <div className={`card shadow bg-${bg} ` + (overflow && "card-overflow")}>
+  <div className={`card box shadow bg-${bg} ` + (overflow && "card-overflow")}>
     {children}
   </div>
 )

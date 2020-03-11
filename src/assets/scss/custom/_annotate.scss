@@ -19,6 +19,11 @@
   }
 }
 
+.group-annotate {
+  position: absolute;
+  cursor: move;
+  z-index: 9999;
+}
 
 .btn-group-annotate {
     position: relative;
@@ -28,7 +33,6 @@
     border-radius: 52px;
     padding: 6px;
     margin: 6px;
-    margin-right: 13rem;
   
   input {
     display: none
@@ -46,13 +50,14 @@
     cursor: pointer;
     outline: none;
     transition: all 32ms ease-out;
-    margin-left: 0.5em;
+    margin: 0.2em;
 
     img {
       width: 25px;
       height: 25px;
     }
   }
+
 }
 
 .tool-button.active {

@@ -16,6 +16,7 @@ import Card from '../components/Card'
 import TextAlign from '../components/TextAlign'
 import Text from '../components/Text'
 import TrelloForm from '../components/TrelloForm'
+import Wait from '../components/Wait'
 
 
 class PostPage extends React.Component {
@@ -51,7 +52,12 @@ class PostPage extends React.Component {
                   <Card.Body px={5} py={5}>
                     { trello.success && (<Text object={trello.success} />) }
                     { trello.error && (<Text object={trello.error} />) }
-                    { !(trello.error || trello.success) && <Text object={{"Please wait" : "Your card is about to be created"}} /> }
+                    { !(trello.error || trello.success) && 
+                      <>
+                        <Text object={{"Please wait" : "Your card is about to be created"}} />
+                        <TextAlign align="center" mt={5}><Wait /></TextAlign>
+                      </>
+                    }
                   </Card.Body>
                 </Card>
               </Col>

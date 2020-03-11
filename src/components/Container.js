@@ -1,7 +1,10 @@
 import React from 'react'
+import { Transition, TransitionGroup } from 'react-transition-group'
+
+import FadeIn from 'react-fade-in'
 
 
-export default ( { fullWidth = true, children, mt=400}) =>
+export default ( { fullWidth = true, children, mt=400}) => (
   <main>
     <section className="section-profile-cover section-shaped my-0">
       <div className="shape shape-style-1 shape-primary alpha-4">
@@ -21,8 +24,10 @@ export default ( { fullWidth = true, children, mt=400}) =>
     </section>
     <section className="section">
       <div className={(fullWidth ? 'container-fluid' : 'container') + (` mt--${mt}`) }>
-        { children }
+        <FadeIn>
+          { children }
+        </FadeIn>
       </div>
     </section>
   </main>
-
+)

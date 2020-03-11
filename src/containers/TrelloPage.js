@@ -54,7 +54,7 @@ class TrelloPage extends React.Component {
 
   render () {
     const { integrations, currentUser, annotatedScreenshot, trello } = this.props
-    if (!annotatedScreenshot){
+    if (!annotatedScreenshot || !currentUser){
       return <Redirect to={ROUTING.OPTIONS_PAGE} />
     }else {
       return (

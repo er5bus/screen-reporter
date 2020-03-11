@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink, Redirect } from 'react-router-dom'
 
-
+import { ROUTING } from '../constants'
 import logo from '../assets/img/logo.png'
 
 
@@ -9,9 +9,9 @@ const Navbar = ({ children }) => (
   <header className="header-global">
     <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light headroom headroom--top headroom--not-bottom">
       <div className="container">
-        <a className="navbar-brand" href="https://latech.io">
+        <NavLink className="navbar-brand" to={ROUTING.OPTIONS_PAGE}>
           <img src={logo} />
-        </a>
+        </NavLink>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>

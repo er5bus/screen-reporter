@@ -31,13 +31,13 @@ export default ({ onSubmit=f=>f, onChangeBoard=f=>f, boards, lists, members, lab
         name="name"
         type="text"
         placeholder="Explain your feedback" 
-        validate={rules.required} 
+        validate={[rules.required, rules.maxLength(80)]} 
       />
       <TextareaField 
         name="description"
         type="text"
         placeholder="Descriptions (steps to reproduce)" 
-        validate={[rules.required]} 
+        validate={[rules.required, rules.maxLength(500)]} 
         defaultValue={browserInfo}
       />
       <SelectField 

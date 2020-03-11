@@ -242,6 +242,7 @@ export const fetchTrelloBoards = () =>
     type: ACTIONS.CALL_API,
     meta: {
       actions: {
+        init: ACTIONS.FETCH_TRELLO_BOARDS_INIT,
         success: ACTIONS.FETCH_TRELLO_BOARDS_SUCCEDED,
         fail: ACTIONS.FETCH_TRELLO_BOARDS_FAILED
       },

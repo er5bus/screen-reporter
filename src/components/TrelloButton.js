@@ -3,13 +3,14 @@ import browser from '../utils/browserAPI'
 import { TRELLO, PAGES } from '../constants'
 
 import trello from '../assets/img/trello-icon.svg'
+import Loader from '../assets/img/loader.gif'
 
 import ButtonIcon from './ButtonIcon'
 
 
-export default ({ buttonText, onAuthSuccess=f=>f, onAuthFailure=f=>f }) => {
+export default ({ buttonText, onAuthSuccess=f=>f }) => {
 
-  let webAuthFlowisOpen = false
+  const [webAuthFlow, setWebAuthFlow] = React.useState(false)
 
   const trelloQuery = (redirectUrl) =>
     ({
@@ -23,25 +24,24 @@ export default ({ buttonText, onAuthSuccess=f=>f, onAuthFailure=f=>f }) => {
     })
 
   const authorize = () => {
-    if (!webAuthFlowisOpen) {
-      webAuthFlowisOpen = true
+    if (!webAuthFlow) {
+      setWebAuthFlow(true)
       const redirectUrl = browser.identity.getRedirectURL();
       browser.identity.launchWebAuthFlow(
         TRELLO.AUTH_URL,
         trelloQuery(redirectUrl),
         (urlParams) => {
           onAuthSuccess(urlParams.get(TRELLO.RESPONSE_TYPE)),
-          webAuthFlowisOpen = false
+          setWebAuthFlow(false)
         },
         (args) => {
-          onAuthFailure(args)
-          webAuthFlowisOpen = false
+          setWebAuthFlow(false)
         }
       )
     }
   }
 
   return (
-    <ButtonIcon icon={trello} onClick={authorize} text="Link your trello account" />
+    <ButtonIcon icon={trello} onClick={authorize} loader={Loader} showLoader={webAuthFlow} text={buttonText} />
   )
 }

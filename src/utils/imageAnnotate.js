@@ -8,6 +8,7 @@ import brush from "../../assets/img/brush.png"
 import undo from "../../assets/img/undo.png"
 import redo from "../../assets/img/redo.png"
 import pan from "../../assets/img/pan.png"
+import drag from "../../assets/img/drag.png"
 
 /**
  * Function to annotate the image
@@ -16,7 +17,7 @@ import pan from "../../assets/img/pan.png"
  */
 export default function Annotate(el, options) {
   this.options = options;
-  this.$el = $(el);
+  this.$el = $(document).find(el);
   this.$toolElem = $(options.tools)
   this.clicked = false;
   this.fromx = null;
@@ -106,6 +107,8 @@ Annotate.prototype = {
       '" data-tool="pen"' +
       ' data-toggle="tooltip" data-placement="top" title="Pen Tool">' +
       ' <img src="' + brush +'" /></label>' +
+      '<label class="tool-button" style="z-index: -1;">' +
+      ' <img src="'+ drag +'" /></label>' +
       '<button type="button" id="redoaction"' +
       ' title="Redo the last undone annotation"' +
       'class="tool-button ' + classPosition2 + ' annotate-redo">' +
@@ -131,8 +134,7 @@ Annotate.prototype = {
         self.options.height = 480;
       }
       self.baseCanvas.width = self.drawingCanvas.width = self.options.width;
-      self.baseCanvas.height = self.drawingCanvas.height = self.options
-        .height;
+      self.baseCanvas.height = self.drawingCanvas.height = self.options.height;
     }
     self.$tool.on('change', 'input[name^="tool_option"]', function(e) {
       self.$el.css({cursor: 'crosshair'});
@@ -265,20 +267,18 @@ Annotate.prototype = {
     self.img = new Image();
     self.img.src = image.path;
     self.img.onload = function() {
-      if ((self.options.width && self.options.height) !== undefined ||
-        (self.options.width && self.options.height) !== 0) {
-        self.currentWidth = this.width;
-        self.currentHeight = this.height;
-        self.selectImageSize.width = this.width;
-        self.selectImageSize.height = this.height;
+      if ((self.options.width && self.options.height) !== undefined || (self.options.width && self.options.height) !== 0) {
+        self.currentWidth = self.$el.innerWidth() || this.width;
+        self.currentHeight = self.$el.innerHeight() || this.height;
+        self.selectImageSize.width = self.currentWidth || this.width;
+        self.selectImageSize.height = self.currentHeight || this.height;
       } else {
         self.currentWidth = self.options.width;
         self.currentHeight = self.options.height;
       }
       self.baseCanvas.width = self.drawingCanvas.width = self.currentWidth;
       self.baseCanvas.height = self.drawingCanvas.height = self.currentHeight;
-      self.baseContext.drawImage(self.img, 0, 0, self.currentWidth,
-        self.currentHeight);
+      self.baseContext.drawImage(self.img, 0, 0, self.currentWidth, self.currentHeight);
       self.$el.css({
         height: self.currentHeight,
         width: self.currentWidth
@@ -665,7 +665,8 @@ Annotate.prototype = {
   },
   annotateresize: function() {
     var self = this;
-    var currentWidth = self.$el.width();
+    var currentWidth = self.$el.parent().width();
+    console.log(currentWidth)
     var currentcompensationWidthRate = self.compensationWidthRate;
     self.compensationWidthRate = self.selectImageSize.width / currentWidth;
     if (self.compensationWidthRate < 1) {
@@ -673,10 +674,8 @@ Annotate.prototype = {
     }
     self.linewidth = self.options.linewidth * self.compensationWidthRate;
     self.fontsize = String(parseInt(self.options.fontsize.split('px')[0], 10) * self.compensationWidthRate) + 'px';
-    if (currentcompensationWidthRate !== self.compensationWidthRate) {
-      self.redraw();
-      self.clear();
-    }
+    self.redraw();
+    self.clear();
   },
   updateOptions: function (options) {
     this.options = $.extend({}, this.options, options)

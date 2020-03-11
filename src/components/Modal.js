@@ -1,12 +1,12 @@
 import React from 'react'
 
-
 import Button from './Button'
+import FadeIn from 'react-fade-in'
 
 
-const Modal = ({title, children, onClose=f=>f}) => (
+const Modal = ({title, children, show, onClose=f=>f}) => (
   <div>
-    <div className="modal fade show" role="dialog" tabIndex="-1">
+    <div className={"modal fade show" + (show ? " animated fadeIn" : " animated fadeOut") } role="dialog" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">
@@ -22,7 +22,6 @@ const Modal = ({title, children, onClose=f=>f}) => (
     <div className="modal-backdrop fade show"></div>
   </div>
 )
-
 
 Modal.Body = ({children}) => (
   <div className="modal-body">

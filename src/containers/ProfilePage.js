@@ -14,6 +14,7 @@ import Card from '../components/Card'
 import TextAlign from '../components/TextAlign'
 import TextMuted from '../components/TextMuted'
 import EditProfileForm from '../components/EditProfileForm'
+import LogoutModal from '../components/LogoutModal'
 import Alert from '../components/Alert'
 
 
@@ -21,6 +22,9 @@ class EditProfilePage extends React.Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      showLogoutModal: false
+    }
   }
 
   componentDidMount() {
@@ -31,8 +35,13 @@ class EditProfilePage extends React.Component {
     this.props.editProfile(values, this.props.currentUser.id)
   }
 
+  onToggelLogoutModal = () => {
+    this.setState({ showLogoutModal: !this.state.showLogoutModal })
+  }
+
   render() {
     const { error, success, currentUser } = this.props
+    const { showLogoutModal } = this.state
     if (!currentUser){
       return <Redirect to={ROUTING.LOGIN_PAGE} />
     }else {
@@ -42,10 +51,11 @@ class EditProfilePage extends React.Component {
             <Navbar.Dropdown text={currentUser.fullname}>
               <Navbar.DropdownLinkItem to={ROUTING.PROFILE_PAGE} text="Profile" />
               <Navbar.DropdownLinkItem to={ROUTING.OPTIONS_PAGE} text="Integrations" />
-              <Navbar.DropdownItem onClick={this.props.logout} text="Logout" />
+              <Navbar.DropdownItem onClick={this.onToggelLogoutModal} text="Logout" />
             </Navbar.Dropdown>
           </Navbar>
           <Container fullWidth={false} mt={300}>
+            { showLogoutModal && <LogoutModal show={showLogoutModal} onClose={this.onToggelLogoutModal} onLogout={this.props.logout} /> }
             <Row>
               <Col xl={6} lg={7} md={8} sm={12}>
                 { error && <Alert.Error object={error} /> }
