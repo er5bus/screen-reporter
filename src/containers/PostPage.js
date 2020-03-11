@@ -45,7 +45,7 @@ class PostPage extends React.Component {
           <Navbar>
             <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="Options" />
           </Navbar>
-          <Container fullWidth={false}  mt={200}>
+          <Container fullWidth={false}  mt={300}>
             <Row>
               <Col xl={8} lg={8} md={8} sm={12} >
                 <Card bg="secondary">
@@ -56,13 +56,13 @@ class PostPage extends React.Component {
                     { trello.success && 
                       <>
                         <Text object={trello.success} /> 
-                        <TextAlign align="center" mt={5}><img src={success} /></TextAlign>
+                        <TextAlign align="center" mt={0}><img src={success} /></TextAlign>
                       </>
                     }
                     { trello.error && 
                       <>
                         <Text object={trello.error} /> 
-                        <TextAlign align="center" mt={5}><img src={error} /></TextAlign>
+                        <TextAlign align="center" mt={0}><img src={error} /></TextAlign>
                       </>
                     }
                     { !(trello.error || trello.success) && 
