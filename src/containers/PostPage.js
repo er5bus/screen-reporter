@@ -7,6 +7,9 @@ import { ROUTING } from '../constants'
 
 import { removeScreenshot, removeMessages } from '../actions'
 
+import success from '../assets/img/success.png'
+import error from '../assets/img/error.png'
+
 import Button from '../components/Button'
 import Col from '../components/Col'
 import Row from '../components/Row'
@@ -50,8 +53,18 @@ class PostPage extends React.Component {
                     <Card.Title text="Post it on Trello" />
                   </Card.Header>
                   <Card.Body px={5} py={5}>
-                    { trello.success && (<Text object={trello.success} />) }
-                    { trello.error && (<Text object={trello.error} />) }
+                    { trello.success && 
+                      <>
+                        <Text object={trello.success} /> 
+                        <TextAlign align="center" mt={5}><img src={success} /></TextAlign>
+                      </>
+                    }
+                    { trello.error && 
+                      <>
+                        <Text object={trello.error} /> 
+                        <TextAlign align="center" mt={5}><img src={error} /></TextAlign>
+                      </>
+                    }
                     { !(trello.error || trello.success) && 
                       <>
                         <Text object={{"Please wait" : "Your card is about to be created"}} />
