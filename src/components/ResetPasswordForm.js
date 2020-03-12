@@ -19,6 +19,7 @@ export default ({ onSubmit }) => {
         icon="ni-email-83"  
         placeholder="What's your work email?" 
         validate={[rules.required, rules.email]} 
+        maxLength={100}
       />
       <TextAlign mt={4}>
         <Button type="submit" style="info" text="Reset password" />

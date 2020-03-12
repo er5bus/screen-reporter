@@ -1,4 +1,5 @@
 import React from 'react'
+import FadeIn from 'react-fade-in'
 
 
 export default ({ children, onSubmit }) => {
@@ -56,7 +57,9 @@ export default ({ children, onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {children}
+      <FadeIn>
+        {children}
+      </FadeIn>
     </form>
   )
 }

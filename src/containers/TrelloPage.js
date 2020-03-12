@@ -60,7 +60,7 @@ class TrelloPage extends React.Component {
       return (
         <>
           <Navbar>
-            <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="Options" />
+            <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="Integrations" />
             <Navbar.Link to={ROUTING.SCREEN_CAPTURE_EDITOR.PATH.replace(/:uuid/gi, annotatedScreenshot.uuid)} text="Go Back to Previous Page" />
           </Navbar>
           <Container fullWidth={false}  mt={!integrations.length ? 200 : 400}>
@@ -76,7 +76,7 @@ class TrelloPage extends React.Component {
                       <Text object={{"Info " : "In order to post this screen capture on trello you need to login then link your trello account"}} />
                       <TextAlign align="center">
                         <NavLink to={ROUTING.OPTIONS_PAGE}>
-                          Check your options page
+                          Link Your Trello account
                         </NavLink>
                       </TextAlign>
                     </Card.Body>

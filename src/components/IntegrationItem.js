@@ -16,7 +16,7 @@ export default ({ integration, providerIcon, onRemove=f=>f, onActivate=f=>f }) =
       <Button sm={true} style="danger" onClick={() => onRemove(integration.id)} text="remove" />
     </div>
     <div className="ml-2 mr-2">
-      <Button sm={true} disabled={integration.active} style="warning" onClick={() => onActivate({active:true},integration.id)} text="activate" />
+      <Button sm={true} disabled={integration.active} style="warning" onClick={() => onActivate({...integration, active:true},integration.id)} text="activate" />
     </div>
   </div>
 )

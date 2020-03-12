@@ -89,9 +89,8 @@ class IntegrationPage extends React.Component {
                     <Card.Title text="Integrations" />
                   </Card.Header>
                   <Card.Body px={5} py={5}>
-                    <TextMuted align="center" mb={2} text="Integrations is like a project, which lives inside your existing issue tracking or project management tool."/>
-                    <TextMuted align="center" mb={1} text="Currently we only support trello."/>
-                    <TextMuted align="center" mb={3} text="Link as many trello account as you need."/>
+                    <TextMuted align="center" mb={1} text="Integrations is like a project, which lives inside your existing issue tracking or project management tool."/>
+                    <TextMuted align="center" mb={5} text="Currently we only support trello."/>
                     <TextAlign align="center" mb={5}>
                       <TrelloButton buttonText={integrations.length ? "Link Another trello account" : "Link Your trello account"} onAuthSuccess={this.onAuthSuccess} />
                     </TextAlign>

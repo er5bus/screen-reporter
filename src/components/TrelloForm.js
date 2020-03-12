@@ -3,9 +3,9 @@ import React from 'react'
 import rules from '../utils/validation'
 import browserInfo from '../utils/browserInfo'
 
-import InputText from './InputText'
+import InputText from './InputTextWithLabel'
 import InputSelect from './InputSelect'
-import InputTextarea from './InputTextarea'
+import InputTextarea from './InputTextareaWithLabel'
 import TextAlign from './TextAlign'
 import Button from './Button'
 import Form from './Form'
@@ -30,15 +30,19 @@ export default ({ onSubmit=f=>f, onChangeBoard=f=>f, boards, lists, members, lab
       <TextField 
         name="name"
         type="text"
+        label="Explain your feedback *"
         placeholder="Explain your feedback" 
         validate={[rules.required, rules.maxLength(80)]} 
+        maxLength={80}
       />
       <TextareaField 
         name="description"
+        label="Descriptions *"
         type="text"
         placeholder="Descriptions (steps to reproduce)" 
         validate={[rules.required, rules.maxLength(500)]} 
         defaultValue={browserInfo}
+        maxLength={500}
       />
       <SelectField 
         name="list"

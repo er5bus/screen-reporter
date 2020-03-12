@@ -37,8 +37,7 @@ browser.storage.getItem(STORAGE.STORE, INIT_STATE)
       </Provider>,
       document.getElementById('root')
     )
-  })
-  .catch((err) => {
+  }).catch((err) => {
     render(
       <ErrorPage code={500} message="Looks like the page you were looking for is no longer here" />,
       document.getElementById('root')

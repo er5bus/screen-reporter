@@ -1,6 +1,18 @@
+.page-container {
+  position: relative;
+  min-height: 100vh;
+  text-align: center;
+}
+
+main {
+  padding-bottom: 2.5rem;
+}
+
 .footer {
-    background: $footer-bg;
-    padding: 3rem 0;
+    padding: 2rem 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     //color: $footer-color;
 
     .col-footer {

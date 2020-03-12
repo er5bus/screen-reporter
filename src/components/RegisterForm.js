@@ -19,6 +19,7 @@ export default ({ onSubmit }) => {
         icon="ni-email-83"  
         placeholder="What's your work email?" 
         validate={[rules.required, rules.email]} 
+        maxLength={100}
       />
       <TextField 
         name="fullname"
@@ -26,13 +27,15 @@ export default ({ onSubmit }) => {
         icon="ni-circle-08"
         placeholder="Full name" 
         validate={rules.required} 
+        maxLength={100}
       />
       <TextField 
         name="password"
         type="password" 
         icon="ni-lock-circle-open" 
         placeholder="Pick a Password" 
-        validate={[rules.required, rules.minLength(4)]} 
+        validate={[rules.required, rules.minLength(4)]}
+        maxLength={100}
       />
       <TextAlign mt={4}>
         <Button type="submit" style="info" text="Create account" />

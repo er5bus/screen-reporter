@@ -2,10 +2,11 @@ import React from 'react'
 import { NavLink, Redirect } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import FadeIn from 'react-fade-in'
 
 import { ROUTING } from '../constants'
 
-import { removeScreenshot, removeMessages } from '../actions'
+import { removeScreenshot, logout, removeMessages } from '../actions'
 
 import success from '../assets/img/success.png'
 import error from '../assets/img/error.png'
@@ -20,12 +21,16 @@ import TextAlign from '../components/TextAlign'
 import Text from '../components/Text'
 import TrelloForm from '../components/TrelloForm'
 import Wait from '../components/Wait'
+import LogoutModal from '../components/LogoutModal'
 
 
 class PostPage extends React.Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      showLogoutModal: false
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -35,17 +40,27 @@ class PostPage extends React.Component {
     }
   }
 
+  onToggelLogoutModal = () => {
+    this.setState({ showLogoutModal: !this.state.showLogoutModal })
+  }
+
   render () {
-    const { trello } = this.props
-    if (!trello.initCardCreation){
+    const { trello, currentUser } = this.props
+    const { showLogoutModal } = this.state
+    if (!trello.initCardCreation || !currentUser){
       return <Redirect to={ROUTING.LOGIN_PAGE} />
     }else {
       return (
         <>
           <Navbar>
-            <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="Options" />
+            <Navbar.Dropdown text={currentUser.fullname}>
+              <Navbar.DropdownLinkItem to={ROUTING.PROFILE_PAGE} text="Profile" />
+              <Navbar.DropdownLinkItem to={ROUTING.OPTIONS_PAGE} text="Integrations" />
+              <Navbar.DropdownItem onClick={this.onToggelLogoutModal} text="Logout" />
+            </Navbar.Dropdown>
           </Navbar>
           <Container fullWidth={false}  mt={300}>
+            { showLogoutModal && <LogoutModal show={showLogoutModal} onClose={this.onToggelLogoutModal} onLogout={this.props.logout} /> }
             <Row>
               <Col xl={8} lg={8} md={8} sm={12} >
                 <Card bg="secondary">
@@ -53,24 +68,26 @@ class PostPage extends React.Component {
                     <Card.Title text="Post it on Trello" />
                   </Card.Header>
                   <Card.Body px={5} py={5}>
-                    { trello.success && 
+                    <FadeIn>
+                      { trello.success &&
                       <>
-                        <Text object={trello.success} /> 
+                        <Text object={trello.success} />
                         <TextAlign align="center" mt={0}><img src={success} /></TextAlign>
                       </>
-                    }
-                    { trello.error && 
-                      <>
-                        <Text object={trello.error} /> 
-                        <TextAlign align="center" mt={0}><img src={error} /></TextAlign>
-                      </>
-                    }
-                    { !(trello.error || trello.success) && 
-                      <>
-                        <Text object={{"Please wait" : "Your card is about to be created"}} />
-                        <TextAlign align="center" mt={5}><Wait /></TextAlign>
-                      </>
-                    }
+                      }
+                      { trello.error &&
+                        <>
+                          <Text object={trello.error} />
+                          <TextAlign align="center" mt={0}><img src={error} /></TextAlign>
+                        </>
+                      }
+                      { !(trello.error || trello.success) &&
+                        <>
+                          <Text object={{"Please wait" : "Your card is about to be created"}} />
+                          <TextAlign align="center" mt={5}><Wait /></TextAlign>
+                        </>
+                      }
+                    </FadeIn>
                   </Card.Body>
                 </Card>
               </Col>
@@ -83,7 +100,7 @@ class PostPage extends React.Component {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ removeScreenshot, removeMessages }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({ removeScreenshot, logout, removeMessages }, dispatch)
 
 const mapStateToProps = state => {
   const { currentUser } = state.auth

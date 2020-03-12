@@ -11,8 +11,8 @@ export default ({ onClose, show, onLogout }) => (
       <Text align="center" text="Are you sure you want to logout ?" />
     </Modal.Body>
     <Modal.Footer>
-      <Button onClick={onLogout} text="Logout" style="danger" type="button" />
       <Button onClick={onClose} text="Close" style="info" type="button" />
+      <Button onClick={onLogout} text="Logout" style="danger" type="button" />
     </Modal.Footer>
   </Modal>
 )

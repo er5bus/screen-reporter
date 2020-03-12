@@ -23,11 +23,11 @@ const chromeIdentity = ( function () {
       browser.launchWebAuthFlow({url: authUrl, interactive: true},
         function(redirectUrl) {
           if (chrome.runtime.lastError) {
+            console.log(chrome.runtime.lastError)
             onError(new Error(chrome.runtime.lastError));
             return;
           }
           const url = new URL(redirectUrl.replace('#', '?'))
-          console.log(url)
           onSuccess.apply({authUrl, redirectUrl}, [url.searchParams])
         }
       );

@@ -29,6 +29,17 @@ class ScreenCaptureEditor extends React.Component {
     this.state = { showModal: false }
   }
 
+  onUnload = e => { // the method that will be used for both add and remove event
+    e.preventDefault();
+    e.returnValue = '';
+  }
+
+  componentWillUnmount() {
+    this.saveScreenCapture()
+    this.annotate = undefined
+    this.imageAnnotateRef = undefined
+  }
+
   componentDidMount() {
     this.props.removeMessages()
     this.props.fetchScreenshot(this.props.match.params)
@@ -51,15 +62,10 @@ class ScreenCaptureEditor extends React.Component {
     }
   }
 
-  componentUnMount() {
-    this.annotate = undefined
-    this.imageAnnotateRef = undefined
-  }
-
   onEditSettings = (values) => {
     const { currentUser} = this.props
     if (currentUser){
-      this.props.editSettings(values)  
+      this.props.editSettings(values)
     }else {
       this.props.editSettingsLocal(values)
     }
@@ -79,13 +85,11 @@ class ScreenCaptureEditor extends React.Component {
     })
   }
 
-  onContinue = (e) => {
-    e.preventDefault()
+  saveScreenCapture = () => {
     const { screenshot } = this.props
     this.annotate.exportImage(CAPTURE_ANNOTATION_OPTIONS, (imageURI) =>
       this.props.editScreenshot({ ...screenshot, imageURI }, { uuid: screenshot.uuid })
     )
-    this.props.history.push(ROUTING.TRELLO_PAGE)
   }
 
   render() {
@@ -97,10 +101,10 @@ class ScreenCaptureEditor extends React.Component {
       return (
         <>
           <Navbar>
-            <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="Options" />
+            <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="Integrations" />
             <Navbar.Item onClick={this.onShowSettings} text="Settings" />
             <Navbar.Item onClick={this.onDownloadScreenCapture} text="Download" />
-            <Navbar.Item onClick={this.onContinue} text="Post on Trello" />
+            <Navbar.Link to={ROUTING.TRELLO_PAGE} text="Post on Trello" />
           </Navbar>
           { showModal &&
           <SettingsPage
@@ -114,9 +118,9 @@ class ScreenCaptureEditor extends React.Component {
             <Card overflow={true}>
               <Card.Body>
                 <div ref={this.imageAnnotateRef}>
-                <Draggable bounds="parent" defaultPosition={{x: window.innerWidth / 2.5, y: 25}}>
-                  <div className="group-annotate" id="js-tools-menu" />
-                </Draggable>  
+                  <Draggable bounds="parent" defaultPosition={{x: window.innerWidth / 2.5, y: 25}}>
+                    <div className="group-annotate" id="js-tools-menu" />
+                  </Draggable>
                 </div>
               </Card.Body>
             </Card>

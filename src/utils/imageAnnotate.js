@@ -268,14 +268,20 @@ Annotate.prototype = {
     self.img.src = image.path;
     self.img.onload = function() {
       if ((self.options.width && self.options.height) !== undefined || (self.options.width && self.options.height) !== 0) {
-        self.currentWidth = self.$el.innerWidth() || this.width;
-        self.currentHeight = self.$el.innerHeight() || this.height;
-        self.selectImageSize.width = self.currentWidth || this.width;
-        self.selectImageSize.height = self.currentHeight || this.height;
+        self.currentWidth = self.$el.width() || $( window ).width();
+        var aspectRatio = this.height / this.width
+        self.currentHeight = self.currentWidth * aspectRatio;
+        self.selectImageSize.width = self.currentWidth;
+        self.selectImageSize.height = self.currentHeight;
       } else {
         self.currentWidth = self.options.width;
         self.currentHeight = self.options.height;
       }
+      self.baseCanvas.mozImageSmoothingEnabled = true;
+      self.baseCanvas.imageSmoothingQuality = "Hight";
+      self.baseCanvas.webkitImageSmoothingEnabled = true;
+      self.baseCanvas.msImageSmoothingEnabled = true;
+      self.baseCanvas.imageSmoothingEnabled = true;
       self.baseCanvas.width = self.drawingCanvas.width = self.currentWidth;
       self.baseCanvas.height = self.drawingCanvas.height = self.currentHeight;
       self.baseContext.drawImage(self.img, 0, 0, self.currentWidth, self.currentHeight);
@@ -666,7 +672,6 @@ Annotate.prototype = {
   annotateresize: function() {
     var self = this;
     var currentWidth = self.$el.parent().width();
-    console.log(currentWidth)
     var currentcompensationWidthRate = self.compensationWidthRate;
     self.compensationWidthRate = self.selectImageSize.width / currentWidth;
     if (self.compensationWidthRate < 1) {
