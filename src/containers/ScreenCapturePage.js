@@ -101,7 +101,6 @@ class ScreenCaptureEditor extends React.Component {
       return (
         <>
           <Navbar>
-            <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="Integrations" />
             <Navbar.Item onClick={this.onShowSettings} text="Settings" />
             <Navbar.Item onClick={this.onDownloadScreenCapture} text="Download" />
             <Navbar.Link to={ROUTING.TRELLO_PAGE} text="Post on Trello" />

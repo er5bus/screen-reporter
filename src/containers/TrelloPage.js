@@ -54,20 +54,20 @@ class TrelloPage extends React.Component {
 
   render () {
     const { integrations, currentUser, annotatedScreenshot, trello } = this.props
-    if (!annotatedScreenshot || !currentUser){
+    if (!annotatedScreenshot){
       return <Redirect to={ROUTING.OPTIONS_PAGE} />
     }else {
       return (
         <>
           <Navbar>
-            <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="Integrations" />
+            <Navbar.Link to={ROUTING.OPTIONS_PAGE} text="My Integrations" />
             <Navbar.Link to={ROUTING.SCREEN_CAPTURE_EDITOR.PATH.replace(/:uuid/gi, annotatedScreenshot.uuid)} text="Go Back to Previous Page" />
           </Navbar>
           <Container fullWidth={false}  mt={!integrations.length ? 200 : 400}>
             <Row>
               <Col xl={8} lg={8} md={8} sm={12} >
                 { trello.error && <Alert.Error object={trello.error} /> }
-                { !integrations.length
+                { !integrations.length  || !currentUser
                   ? (<Card bg="secondary">
                     <Card.Header>
                       <Card.Title text={!integrations.length ? "No trello account available" : "Post it on Trello"} />
@@ -76,7 +76,7 @@ class TrelloPage extends React.Component {
                       <Text object={{"Info " : "In order to post this screen capture on trello you need to login then link your trello account"}} />
                       <TextAlign align="center">
                         <NavLink to={ROUTING.OPTIONS_PAGE}>
-                          Link Your Trello account
+                          Login then Link Your Trello account
                         </NavLink>
                       </TextAlign>
                     </Card.Body>
