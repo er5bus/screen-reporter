@@ -29,9 +29,9 @@ export default class SettingsPage extends React.Component {
     const { onSubmit, error, success, show, onClose, initData = {} } = this.props
     return (
       <Modal title="Settings" show={show} onClose={onClose}>
-        <Form onSubmit={(values) => onSubmit({...values, color: this.state.color})}>
-          <Modal.Body>
-            { error && <Alert.Error object={error} /> }
+        <Modal.Body>
+          { error && <Alert.Error object={error} /> }
+          <Form onSubmit={(values) => onSubmit({...values, color: this.state.color})}>
             <TextField
               name="fontsize"
               type="text"
@@ -49,12 +49,12 @@ export default class SettingsPage extends React.Component {
               validate={[rules.required, rules.digits, rules.min(4), rules.max(40)]}
             />
             <ColorPicker label="Choose a color" onChange={ this.onColorChange } color={this.state.color} />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button text="Save settings" style="info" type="submit" />
-            <Button onClick={onClose} text="Close" style="primary" type="button" />
-          </Modal.Footer>
-        </Form>
+            <Modal.Body.Footer>
+              <Button text="Save settings" style="info" type="submit" />
+              <Button onClick={onClose} text="Close" style="primary" type="button" />
+            </Modal.Body.Footer>
+          </Form>
+        </Modal.Body>
       </Modal>
     )
   }

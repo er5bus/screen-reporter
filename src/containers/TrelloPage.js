@@ -41,10 +41,10 @@ class TrelloPage extends React.Component {
     }
   }
 
-  onBoardChange = (value) => {
-    this.props.fetchTrelloBoardLists(value)
-    this.props.fetchTrelloBoardMembers(value)
-    this.props.fetchTrelloBoardLabels(value)
+  onBoardChange = (choice) => {
+    this.props.fetchTrelloBoardLists(choice.value)
+    this.props.fetchTrelloBoardMembers(choice.value)
+    this.props.fetchTrelloBoardLabels(choice.value)
   }
 
   onCreateTrelloCard = (values) => {

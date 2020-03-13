@@ -17,16 +17,17 @@ export default ({ children, onSubmit }) => {
     return data
   }
 
-  const dispatchEvent = (events, elements, inputContaineErrors = []) => {
-    let formNode = new Set(["INPUT", "SELECT", "TEXTAREA"])
+  const dispatchEvent = (elements, inputContaineErrors = []) => {
+    const formNode = new Set(["INPUT", "SELECT", "TEXTAREA"])
+    const event = new Event("validate")
     for(let input of elements) {
       if (formNode.has(input.nodeName) && inputContaineErrors.includes(input.name)){
-        events.map((event) => input.dispatchEvent(event))
+        input.dispatchEvent(event)
       }
     }
   }
 
-  const isValidForm = (events, object) => {
+  const isValidForm = (object) => {
     let validation, error=false
     let inputs = []
     React.Children.forEach(children, (child) => {
@@ -34,7 +35,7 @@ export default ({ children, onSubmit }) => {
         validation = Array.isArray(child.props.validate) ? child.props.validate : [child.props.validate]
         error = validation.some((fn) => fn.apply(null, [object[child.props.name]]))
         if (error) {
-          inputs.push(child.props.name)
+          inputs.push(child.props.name.replace("[]", ""))
         }
       }
     })
@@ -44,14 +45,12 @@ export default ({ children, onSubmit }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
     const object = serializeArray(event.target.elements)
-    const inputContaineErrors = isValidForm([ new Event("blur")], object)
+    const inputContaineErrors = isValidForm(object)
     if (!inputContaineErrors.length){
       Object.keys(object).forEach((key) => (object[key] === null || object[key] === "" ) && delete object[key])
       onSubmit(object)
     }else {
-      const blurEvent = new Event("blur")
-      const changeEvent = new Event("focus")
-      dispatchEvent([blurEvent, changeEvent], event.target.elements, inputContaineErrors)
+      dispatchEvent(event.target.elements, inputContaineErrors)
     }
   }
 

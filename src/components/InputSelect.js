@@ -11,12 +11,18 @@ const ControlComponent = props => (
 
 
 export default props => {
-  const { onBlur, onChange, error=null, ...input } = props
+  const { onBlur=f=>f, onChange=f=>f, error=null, ...input } = props
   return (
       <div className={("form-group mb-3 ") + ( error ? " has-danger " : "")}>
         <Select
           className={ (error ? " is-invalid ": "")}
-          onChange={onBlur}
+          blur={() => console.log('jjj')}
+          onChange={(choice) => {
+            onBlur.apply(null, [choice.value])
+            if (onChange){
+              onChange.apply(null, [choice])
+            }
+          }}
           components={{ Control: ControlComponent }}
           {...input}
         />

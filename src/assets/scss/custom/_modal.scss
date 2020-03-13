@@ -7,6 +7,14 @@
     }  
 }
 
+.modal-body-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+}
 
 .modal-fluid {
     .modal-dialog {

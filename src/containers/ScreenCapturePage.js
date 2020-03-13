@@ -105,14 +105,13 @@ class ScreenCaptureEditor extends React.Component {
             <Navbar.Item onClick={this.onDownloadScreenCapture} text="Download" />
             <Navbar.Link to={ROUTING.TRELLO_PAGE} text="Post on Trello" />
           </Navbar>
-          { showModal &&
           <SettingsPage
             show={showModal}
             error={settingsError}
             onSubmit={this.onEditSettings}
             onClose={this.onShowSettings}
             initData={settings}
-          /> }
+          />
           <Container mt={500}>
             <Card overflow={true}>
               <Card.Body>
